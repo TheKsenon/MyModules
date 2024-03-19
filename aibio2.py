@@ -25,14 +25,13 @@ class AIBioMod(loader.Module):
 
     # Команда .aibio
     @loader.unretr_cmd(
-        "aibio ((?!
-).*)?"
+        "aibio ((?!).*)?"
     )
     async def aibio(self, message):
         """Генерация био с помощью ИИ"""
         prompt = utils.get_args_raw(message)
         if not prompt:
-            await utils.answer(message, self.strings("bio", message))
+            await utils.answer(message, self.strings["bio"])
             return
 
         # Отправка запроса на API
