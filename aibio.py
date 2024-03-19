@@ -20,8 +20,8 @@ class AiBioMod(loader.Module):
     Код для изменения данных пользователя в Telegram."""
     strings = {'name': 'AiBio'}
     
-    async def biocmd(self, message):
-        """Команда .bio изменит ваше био."""
+    async def aibiocmd(self, message):
+        """Команда .aibio изменит ваше био."""
         args = utils.get_args_raw(message)
         if not args:
             return await message.edit('Нет аргументов.')
