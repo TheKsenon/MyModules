@@ -8,9 +8,9 @@ API_KEY_GPT35 = 'ddosxd-api-1jq4e9xbzu2ilgn'
 headers = {'Authorization': API_KEY_GPT35}
 
 def register(cb):
-    cb(TestMod())
+    cb(ProstokvashinoMod())
 
-class TestMod(loader.Module):
+class ProstokvashinoMod(loader.Module):
     """[🎶] AI Bio
     
     [😁] ИИ придумает за вас био!
