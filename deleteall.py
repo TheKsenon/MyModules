@@ -8,6 +8,8 @@ class DeleteMessagesMod(loader.Module):
     """Модуль удаляет все сообщения от указанного пользователя.
     
     [💀] Пример: .deleteall @username
+
+    [🤫] Разработчик: @XenonModules / @officialksenon
     """
 
     strings = {"name": "DeleteMessages"}
