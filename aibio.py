@@ -8,9 +8,9 @@ API_KEY_GPT35 = 'ddosxd-api-1jq4e9xbzu2ilgn'
 headers = {'Authorization': API_KEY_GPT35}
 
 def register(cb):
-    cb(ProstokvashinoMod())
+    cb(AiBioMod())
 
-class ProstokvashinoMod(loader.Module):
+class AiBioMod(loader.Module):
     """[🎶] AI Bio
     
     [😁] ИИ придумает за вас био!
@@ -18,7 +18,7 @@ class ProstokvashinoMod(loader.Module):
     [🐍] Разработчик:
     @XenonModules / @officialksenon
     Код для изменения данных пользователя в Telegram."""
-    strings = {'name': 'UserData'}
+    strings = {'name': 'AiBio'}
     
     async def biocmd(self, message):
         """Команда .bio изменит ваше био."""
@@ -32,10 +32,14 @@ class ProstokvashinoMod(loader.Module):
         
         if response.status_code == 200:
             try:
-                bio = response.json()['choices'][0]['text']
-                await message.client(UpdateProfileRequest(about=bio))
-                await message.edit('🔮 Био изменилось!')
-            except KeyError:
-                await message.edit('❌ Не удалось получить био от сервера.')
+                reply = response.json().get('reply')
+                if reply:
+                    bio = reply.strip('"')
+                    await message.client(UpdateProfileRequest(about=bio))
+                    await message.edit('🔮 Био изменилось на "{}"'.format(bio))
+                else:
+                    await message.edit('❌ ИИ не отправил текст для био.')
+            except KeyError as e:
+                await message.edit(f'❌ Ошибка при обработке ответа: {e}')
         else:
-            await message.edit('❌ Ошибка при отправке запроса.')
+            await message.edit(f'❌ Ошибка при отправке запроса: {response.status_code}')
