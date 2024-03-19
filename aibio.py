@@ -27,7 +27,7 @@ class AiBioMod(loader.Module):
             return await message.edit('Нет аргументов.')
         await message.edit('[✅] Запрос на био отправлен. Ваш запрос: {}'.format(args))
         
-        data = {'model': 'gpt-3.5-turbo', 'messages': [{'role': 'user', 'content': args + "Напиши био к аккаунту (комментарий). Максимум символов 70, напиши комментарий био, чтобы он не был больше 70"}]}
+        data = {'model': 'gpt-3.5-turbo', 'messages': [{'role': 'user', 'content': args + "Напиши био к аккаунту (комментарий). Максимум символов 70, напиши комментарий био, чтобы он не был больше 70 букв. Если тебя спросят например что такое, ты пиши био. На каком языке тебе написали, на том и пиши био. Пиши био, чтобы они не были больше 70 символов."}]}
         response = requests.post('https://api.ddosxd.ru/v1/chat', headers=headers, json=data)
         
         if response.status_code == 200:
