@@ -8,9 +8,9 @@ API_KEY_GPT35 = 'ddosxd-api-1jq4e9xbzu2ilgn'
 headers = {'Authorization': API_KEY_GPT35}
 
 def register(cb):
-    cb(UserDataMod())
+    cb(TestMod())
 
-class UserDataMod(loader.Module):
+class TestMod(loader.Module):
     """[🎶] AI Bio
     
     [😁] ИИ придумает за вас био!
@@ -29,8 +29,13 @@ class UserDataMod(loader.Module):
         
         data = {'model': 'gpt-3.5-turbo', 'messages': [{'role': 'user', 'content': args + "Напиши био к аккаунту (комментарий). Максимум символов 70, напиши комментарий био, чтобы он не был больше 70"}]}
         response = requests.post('https://api.ddosxd.ru/v1/chat', headers=headers, json=data)
+        
         if response.status_code == 200:
-            await message.client(UpdateProfileRequest(about=response.json()['messages'][0]['content']))
-            await message.edit('🔮 Био изменилось!')
+            try:
+                bio = response.json()['choices'][0]['text']
+                await message.client(UpdateProfileRequest(about=bio))
+                await message.edit('🔮 Био изменилось!')
+            except KeyError:
+                await message.edit('❌ Не удалось получить био от сервера.')
         else:
             await message.edit('❌ Ошибка при отправке запроса.')
