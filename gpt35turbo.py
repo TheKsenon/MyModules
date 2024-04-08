@@ -40,3 +40,4 @@ class GPT35Mod(loader.Module):
 
         except Exception as e:
             return await message.edit(f"<b>[GPT35]</b> Ошибка при отправке запроса.")
+
