@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Отправка POST-запроса</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f1f1f1;
+  }
+  .container {
+    max-width: 400px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>Отправить POST-запрос</h2>
+  <button id="sendRequest">Отправить</button>
+  <div id="response"></div>
+</div>
+
+<script>
+document.getElementById('sendRequest').addEventListener('click', () => {
+  const req = new XMLHttpRequest();
+
+  req.onreadystatechange = () => {
+    if (req.readyState == XMLHttpRequest.DONE) {
+      document.getElementById('response').innerHTML = `<p><strong>Ответ:</strong> ${req.responseText}</p>`;
+    }
+  };
+  
+  req.open("POST", "https://api.jsonbin.io/v3/b", true);
+  req.setRequestHeader("Content-Type", "application/json");
+  req.setRequestHeader("X-Master-Key", "$2a$10$/JEcv17XQqmSByuqBqqJh.j6gbvA.cYW3zhNkfex0G/fyQ2DCdR/m");
+  req.send('{"sample": "Hello World"}');
+});
+</script>
+</body>
+</html>
