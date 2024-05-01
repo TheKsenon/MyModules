@@ -5,31 +5,118 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IP Information</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        #ip-info {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            max-height: 0; /* Начальная высота 0 */
+            transition: max-height 1.4s; /* Анимируем изменение max-height */
+            font-family: Arial, sans-serif;
+        }
+
+        p {
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+
+        strong {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .restart-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #333;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            padding: 10px;
+            cursor: pointer;
+            transition: transform 0.5s;
+        }
+
+        .rotate {
+            transform: rotate(360deg);
+        }
+    </style>
 </head>
 <body>
     <h1>IP Information</h1>
+    <button class="restart-button"><i class="fas fa-redo"></i></button>
     <div id="ip-info"></div>
 
     <script>
-        const url = 'https://ipapi.co/json/';
+        const url = 'https://ipapi.co/json';
+        const restartButton = document.querySelector('.restart-button');
+        const ipInfoElement = document.getElementById('ip-info');
 
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                const ipInfoElement = document.getElementById('ip-info');
-                ipInfoElement.innerHTML = `
-                    <p><strong>IP Address:</strong> ${data.ip}</p>
-                    <p><strong>City:</strong> ${data.city}</p>
-                    <p><strong>Region:</strong> ${data.region}</p>
-                    <p><strong>Country:</strong> ${data.country_name}</p>
-                    <p><strong>Postal Code:</strong> ${data.currency_name} | ${data.currency}</p>
-                    <p><strong>Timezone:</strong> ${data.timezone}
-                    <p><strong>Number code:</strong> ${data.country_calling_code}
-                `;
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    ipInfoElement.innerHTML = `
+                        <p><strong>IP адрес:</strong> ${data.ip}</p>
+                        <p><strong>Город:</strong> ${data.city}</p>
+                        <p><strong>Регион:</strong> ${data.region}</p>
+                        <p><strong>Страна:</strong> ${data.country_name}</p>
+                        <p><strong>Вид денег:</strong> ${data.currency_name} | ${data.currency}</p>
+                        <p><strong>Таймзона:</strong> ${data.timezone}</p>
+                        <p><strong>Код номера:</strong> ${data.country_calling_code}</p>
+                    `;
+                    ipInfoElement.style.maxHeight = ipInfoElement.scrollHeight + "px"; // Устанавливаем максимальную высоту равной содержимому
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+
+        restartButton.addEventListener('click', () => {
+            restartButton.classList.add('rotate');
+            ipInfoElement.style.maxHeight = '0';
+            setTimeout(() => {
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        ipInfoElement.innerHTML = `
+                            <p><strong>IP адрес:</strong> ${data.ip}</p>
+                            <p><strong>Город:</strong> ${data.city}</p>
+                            <p><strong>Регион:</strong> ${data.region}</p>
+                            <p><strong>Страна:</strong> ${data.country_name}</p>
+                            <p><strong>Вид денег:</strong> ${data.currency_name} | ${data.currency}</p>
+                            <p><strong>Таймзона:</strong> ${data.timezone}</p>
+                            <p><strong>Код номера:</strong> ${data.country_calling_code}</p>
+                        `;
+                        ipInfoElement.style.maxHeight = ipInfoElement.scrollHeight + "px";
+                        setTimeout(() => {
+                            restartButton.classList.remove('rotate');
+                        }, 500);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }, 1500);
+        });
     </script>
 </body>
 </html>
